@@ -16,13 +16,20 @@ provider "aws" {
   region = var.aws_region
 }
 
+
+locals {
+  workspace_tags = merge(var.common_tags, {
+    env = terraform.workspace
+  })
+}
+
 resource "random_id" "suffix" {
   byte_length = 4
 }
 
 resource "aws_s3_bucket" "state" {
   bucket = "${var.project}-state-${random_id.suffix.hex}"
-  tags   = var.common_tags
+  tags = local.workspace_tags
 }
 
 resource "aws_s3_bucket_versioning" "state" {
@@ -60,5 +67,5 @@ resource "aws_dynamodb_table" "terraform_lock" {
     type = "S"
   }
 
-  tags = var.common_tags
+  tags = local.workspace_tags
 }
