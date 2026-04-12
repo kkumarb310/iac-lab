@@ -1,11 +1,11 @@
 output "bucket_name" {
   description = "Name of the S3 state bucket"
-  value       = aws_s3_bucket.state.bucket
+  value       = module.s3_state.bucket_name
 }
 
 output "bucket_arn" {
   description = "ARN of the S3 state bucket"
-  value       = aws_s3_bucket.state.arn
+  value       = module.s3_state.bucket_arn
 }
 
 output "bucket_region" {
