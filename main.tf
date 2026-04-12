@@ -16,7 +16,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-
 locals {
   workspace_tags = merge(var.common_tags, {
     env = terraform.workspace
@@ -32,22 +31,31 @@ module "s3_state" {
   project = var.project
   suffix  = random_id.suffix.hex
   tags    = local.workspace_tags
-}
 
+  lifecycle_rules = {
+    expire-old-versions = {
+      enabled                    = true
+      expiration_days            = 90
+      noncurrent_expiration_days = 30
+    }
+    cleanup-incomplete-uploads = {
+      enabled                    = true
+      expiration_days            = 7
+      noncurrent_expiration_days = 3
+    }
+  }
+}
 
 resource "aws_dynamodb_table" "terraform_lock" {
   name         = "${var.project}-state-lock"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
-
   attribute {
     name = "LockID"
     type = "S"
   }
-
   tags = local.workspace_tags
 }
 
 data "aws_caller_identity" "current" {}
-
 data "aws_region" "current" {}

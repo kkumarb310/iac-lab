@@ -26,3 +26,24 @@ resource "aws_s3_bucket_public_access_block" "this" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
+resource "aws_s3_bucket_lifecycle_configuration" "this" {
+  for_each   = var.lifecycle_rules
+  bucket     = aws_s3_bucket.this.id
+  depends_on = [aws_s3_bucket_versioning.this]
+
+  rule {
+    id     = each.key
+    status = each.value.enabled ? "Enabled" : "Disabled"
+
+    filter {}
+
+    expiration {
+      days = each.value.expiration_days
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = each.value.noncurrent_expiration_days
+    }
+  }
+}
