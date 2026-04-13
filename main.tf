@@ -50,11 +50,17 @@ resource "aws_dynamodb_table" "terraform_lock" {
   name         = "${var.project}-state-lock"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
+
   attribute {
     name = "LockID"
     type = "S"
   }
+
   tags = local.workspace_tags
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 data "aws_caller_identity" "current" {}

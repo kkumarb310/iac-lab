@@ -1,6 +1,10 @@
 ﻿resource "aws_s3_bucket" "this" {
   bucket = "${var.project}-state-${var.suffix}"
   tags   = var.tags
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_s3_bucket_versioning" "this" {
@@ -31,6 +35,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
   for_each   = var.lifecycle_rules
   bucket     = aws_s3_bucket.this.id
   depends_on = [aws_s3_bucket_versioning.this]
+
+  lifecycle {
+    ignore_changes = [rule]
+  }
 
   rule {
     id     = each.key
