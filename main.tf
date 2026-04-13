@@ -46,21 +46,11 @@ module "s3_state" {
   }
 }
 
-resource "aws_dynamodb_table" "terraform_lock" {
-  name         = "${var.project}-state-lock"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-
-  tags = local.workspace_tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+module "dynamodb_lock" {
+  source            = "./modules/dynamodb"
+  project           = var.project
+  tags              = local.workspace_tags
+  state_bucket_name = module.s3_state.bucket_name
 }
 
 data "aws_caller_identity" "current" {}

@@ -15,9 +15,8 @@ output "bucket_region" {
 
 output "dynamodb_table_name" {
   description = "DynamoDB table name for Terraform state locking"
-  value       = aws_dynamodb_table.terraform_lock.name
+  value       = module.dynamodb_lock.table_name
 }
-
 output "aws_account_id" {
   description = "Current AWS account ID"
   value       = data.aws_caller_identity.current.account_id
