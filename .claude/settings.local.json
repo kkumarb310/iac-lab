@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(terraform init:*)",
-      "Bash(terraform validate:*)"
+      "Bash(terraform validate:*)",
+      "mcp__awslabs-terraform-mcp-server__RunCheckovScan",
+      "mcp__awslabs-terraform-mcp-server__ExecuteTerraformCommand"
     ]
   }
 }

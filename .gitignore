@@ -4,7 +4,7 @@
 *.tfstate.backup
 
 # Variable files — may contain secrets
-*.tfvars
+prod.tfvars
 *.tfvars.json
 
 # Crash logs
