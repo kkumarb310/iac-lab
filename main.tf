@@ -53,5 +53,35 @@ module "dynamodb_lock" {
   state_bucket_name = module.s3_state.bucket_name
 }
 
+module "vpc" {
+  source = "./modules/vpc"
+
+  project            = var.project
+  availability_zones = ["${var.aws_region}a", "${var.aws_region}b"]
+  vpc_cidr           = var.vpc_cidr
+
+  public_subnet_cidrs = {
+    "${var.aws_region}a" = "10.0.1.0/24"
+    "${var.aws_region}b" = "10.0.2.0/24"
+  }
+
+  private_subnet_cidrs = {
+    "${var.aws_region}a" = "10.0.10.0/24"
+    "${var.aws_region}b" = "10.0.11.0/24"
+  }
+
+  tags = local.workspace_tags
+}
+
+module "ec2" {
+  source = "./modules/ec2"
+
+  project            = var.project
+  vpc_id             = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnet_ids
+  subnet_key         = "${var.aws_region}a"
+  tags               = local.workspace_tags
+}
+
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}

@@ -17,6 +17,36 @@ output "dynamodb_table_name" {
   description = "DynamoDB table name for Terraform state locking"
   value       = module.dynamodb_lock.table_name
 }
+output "vpc_id" {
+  description = "ID of the VPC"
+  value       = module.vpc.vpc_id
+}
+
+output "public_subnet_ids" {
+  description = "Map of availability zone to public subnet ID"
+  value       = module.vpc.public_subnet_ids
+}
+
+output "private_subnet_ids" {
+  description = "Map of availability zone to private subnet ID"
+  value       = module.vpc.private_subnet_ids
+}
+
+output "ec2_instance_id" {
+  description = "ID of the EC2 instance"
+  value       = module.ec2.instance_id
+}
+
+output "ec2_private_ip" {
+  description = "Private IP address of the EC2 instance"
+  value       = module.ec2.private_ip
+}
+
+output "ec2_security_group_id" {
+  description = "ID of the EC2 security group"
+  value       = module.ec2.security_group_id
+}
+
 output "aws_account_id" {
   description = "Current AWS account ID"
   value       = data.aws_caller_identity.current.account_id
