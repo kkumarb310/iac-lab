@@ -83,5 +83,16 @@ module "ec2" {
   tags               = local.workspace_tags
 }
 
+module "rds" {
+  source                = "./modules/rds"
+  project               = var.project
+  tags                  = local.workspace_tags
+  vpc_id                = module.vpc.vpc_id
+  private_subnet_ids    = module.vpc.private_subnet_ids
+  app_security_group_id = module.ec2.security_group_id
+  db_username           = var.db_username
+  db_password           = var.db_password
+}
+
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}

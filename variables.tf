@@ -16,6 +16,18 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
+variable "db_username" {
+  description = "Master username for the RDS MySQL instance"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_password" {
+  description = "Master password for the RDS MySQL instance"
+  type        = string
+  sensitive   = true
+}
+
 variable "common_tags" {
   description = "Tags applied to every resource"
   type        = map(string)
@@ -25,3 +37,4 @@ variable "common_tags" {
     owner   = "ikshu"
   }
 }
+

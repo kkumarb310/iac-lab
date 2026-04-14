@@ -47,6 +47,22 @@ output "ec2_security_group_id" {
   value       = module.ec2.security_group_id
 }
 
+output "rds_endpoint" {
+  description = "Connection endpoint for the RDS MySQL instance"
+  value       = module.rds.db_endpoint
+  sensitive   = true
+}
+
+output "rds_db_name" {
+  description = "Name of the default database on the RDS instance"
+  value       = module.rds.db_name
+}
+
+output "rds_security_group_id" {
+  description = "ID of the RDS security group"
+  value       = module.rds.security_group_id
+}
+
 output "aws_account_id" {
   description = "Current AWS account ID"
   value       = data.aws_caller_identity.current.account_id
@@ -56,3 +72,4 @@ output "aws_region_name" {
   description = "Current AWS region"
   value       = data.aws_region.current.name
 }
+
